@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{%block style%} 
+    <style>
+      html, body {
+      min-height: 100%;
+      }
+      body, div, form, input, select, textarea, label { 
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      color: #666;
+      line-height: 22px;
+      }
+      h1 {
+      position: absolute;
+      margin:0;
+      font-size: 60px;
+      color: #fff;
+      z-index: 2;
+      line-height: 83px;
+      top:30px;
+      }
+      legend {
+      padding: 10px;      
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 18px;
+      color: #fff;
+      background-color: #8B0000;
+      }
+      textarea {
+      width: calc(100% - 12px);
+      padding: 5px;
+      }
+      .testbox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: inherit;
+      padding: 20px;
+      }
+      form {
+      width: 100%;
+      padding: 20px;
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 0 8px #006622; 
+      }
+      .banner {
+      position: relative;
+      height: 250px;
+      background-image: url("https://www.lab2u.fr/wp-content/uploads/2018/11/Photo-article-NFS-.jpg");  
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      }
+      .banner::after {
+      content: "";
+      background-color: rgba(0, 0, 0, 0.4); 
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      }
+      input, select, textarea {
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      }
+      input {
+      width: calc(100% - 10px);
+      padding: 5px;
+      }
+      input[type="date"] {
+      padding: 4px 5px;
+      }
+      textarea {
+      width: calc(100% - 12px);
+      padding: 5px;
+      }
+      .item:hover p, .item:hover i, .question:hover p, .question label:hover, input:hover::placeholder {
+      color:  #006622;
+      }
+      .checkbox input[type=checkbox] {
+      display:inline-block;
+      height:15px;
+      width:15px;
+      margin-right:5px;
+      vertical-align:text-top;
+      }
+      .item input:hover, .item select:hover, .item textarea:hover {
+      border: 1px solid transparent;
+      box-shadow: 0 0 3px 0  #006622;
+      color: #006622;
+      }
+      .item {
+      position: relative;
+      margin: 10px 0;
+      }
+      .item span {
+      color: red;
+      }
+      .week {
+      display:flex;
+      justfiy-content:space-between;
+      }
+      .colums {
+      display:flex;
+      justify-content:space-between;
+      flex-direction:row;
+      flex-wrap:wrap;
+      }
+      .colums div {
+      width:48%;
+      }
+      input[type=radio], input[type=checkbox]  {
+      display: none;
+      }
+      label.radio {
+      position: relative;
+      display: inline-block;
+      margin: 5px 20px 15px 0;
+      cursor: pointer;
+      }
+      .question span {
+      margin-left: 30px;
+      }
+      .question-answer label {
+      display: block;
+      }
+      label.radio:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      }
+      input[type=radio]:checked + label:before, label.radio:hover:before {
+      border: 2px solid  #006622;
+      }
+      label.radio:after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 5px;
+      width: 8px;
+      height: 4px;
+      border: 3px solid  #006622;
+      border-top: none;
+      border-right: none;
+      transform: rotate(-45deg);
+      opacity: 0;
+      }
+      input[type=radio]:checked + label:after {
+      opacity: 1;
+      }
+      .flax {
+      display:flex;
+      justify-content:space-around;
+      }
+      .btn-block {
+      margin-top: 10px;
+      text-align: center;
+      }
+      button {
+      width: 150px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px; 
+      background:  #1c87c9;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+      }
+      button:hover {
+      background:  #0692e8;
+      }
+      @media (min-width: 568px) {
+      .name-item, .city-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      }
+      .name-item input, .name-item div {
+      width: calc(50% - 20px);
+      }
+      .name-item div input {
+      width:97%;}
+      .name-item div label {
+      display:block;
+      padding-bottom:5px;
+      }
+      }
+    </style>
+{%endblock%}
+{%block title%} Hemogramme {%endblock%}
+
+
+
+{%block content%}
+    <div class="testbox">
+    <form action = "{{url_for('predictnfs')}}" method="post">
+      <div class="banner">
+        <h1>Hémogramme : Anomaly detection ( Isolation forest ) </h1>
+        <h2 style = "color:white;font-style:italic"> {{predict_nfs}} </h2>
+      </div>
+      <br/>
+      <fieldset>
+        <legend style = "text-align:center">Votre numération de formule sanguine, est-elle normale ? </legend>
+        <div class="colums">
+          <div class="item">
+            <label for="gb">Globules blancs<span>*</span></label>
+            <input id="gb" type="number" name="gb" value = "7.33"/>
+          </div>
+          <div class="item">
+            <label for="ly">Lymphocytes<span>*</span></label>
+            <input id="ly" type="number" name="ly" value = "2.39"/>
+          </div>
+          <div class="item">
+            <label for="mono">Monocytes<span>*</span></label>
+            <input id="mono" type="number"   name="mono" value = "0.57" />
+          </div>
+          <div class="item">
+            <label for="neutro">Neutrophiles<span>*</span></label>
+            <input id="neutro" type="numer"   name="neutro" value = "4.10"/>
+          </div>
+          <div class="item">
+            <label for="eosino">Eosinophiles<span>*</span></label>
+            <input id="eosino" type="number"   name="eosino" value = "0.21" />
+          </div>
+          <div class="item">
+            <label for="baso">Basophiles<span>*</span></label>
+            <input id="baso" type="number"   name="baso" value = "0.04"/>
+          </div>
+          <div class="item">
+            <label for="gr">Globules rouges<span>*</span></label>
+            <input id="gr" type="number"   name="gr" value = "4.68"/>
+          </div>
+          <div class="item">
+            <label for="hbg">Hémoglobine<span>*</span></label>
+            <input id="hbg" type="number"   name="hbg" value = "13.87"/>
+          </div>
+          <div class="item">
+            <label for="htc">Hématocrite %<span>*</span></label>
+            <input id="htc" type="number"   name="htc" value = "40.99"/>
+          </div>
+          <div class="item">
+            <label for="vgm">VGM<span>*</span></label>
+            <input id="vgm" type="number"   name="vgm" value = "87.60"/>
+          </div>
+           <div class="item">
+            <label for="tcmh">TCMH<span>*</span></label>
+            <input id="tcmh" type="number"   name="tcmh" value = "29.65"/>
+          </div>
+          <div class="item">
+            <label for="ccmh">CCMH<span>*</span></label>
+            <input id="ccmh" type="number"   name="ccmh" value = "33.83" />
+          </div>
+          <div class="item">
+            <label for="dgr">Distribution globules rouges<span>*</span></label>
+            <input id="dgr" type="number"   name="dgr" value = "12.89"/>
+          </div>
+          <div class="item">
+            <label for="plq">Plaquettes<span>*</span></label>
+            <input id="plq" type="number"   name="plq" value = "279.94"/>
+          </div>
+          <div class="item">
+            <label for="vpq">Volume plaquettaire moyen<span>*</span></label>
+            <input id="vpq" type="number"   name="vpq" value = "8.12"/>
+          </div>
+         
+      </fieldset>
+     
+      <div class="btn-block">
+      <button type="order" type = "submit" style = "background-color:	#8B0000">Predict</button>
+      </div>
+    </form>
+    </div>
+{%endblock%}

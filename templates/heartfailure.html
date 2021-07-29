@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{%block style%} 
+    <style>
+      html, body {
+      min-height: 100%;
+      }
+      body, div, form, input, select, textarea, label { 
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      color: #666;
+      line-height: 22px;
+      }
+      h1 {
+      position: absolute;
+      margin:0;
+      font-size: 60px;
+      color: #fff;
+      z-index: 2;
+      line-height: 83px;
+      top:30px;
+      }
+      legend {
+      padding: 10px;      
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 18px;
+      color: #fff;
+      background-color: #097969;
+      }
+      textarea {
+      width: calc(100% - 12px);
+      padding: 5px;
+      }
+      .testbox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: inherit;
+      padding: 20px;
+      }
+      form {
+      width: 100%;
+      padding: 20px;
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 0 8px #006622; 
+      }
+      .banner {
+      position: relative;
+      height: 250px;
+      background-image: url("https://img.medscape.com/thumbnail_library/is_191118_heart_failure_800x450.jpg");  
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      }
+      .banner::after {
+      content: "";
+      background-color: rgba(0, 0, 0, 0.4); 
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      }
+      input, select, textarea {
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      }
+      input {
+      width: calc(100% - 10px);
+      padding: 5px;
+      }
+      input[type="date"] {
+      padding: 4px 5px;
+      }
+      textarea {
+      width: calc(100% - 12px);
+      padding: 5px;
+      }
+      .item:hover p, .item:hover i, .question:hover p, .question label:hover, input:hover::placeholder {
+      color:  #006622;
+      }
+      .checkbox input[type=checkbox] {
+      display:inline-block;
+      height:15px;
+      width:15px;
+      margin-right:5px;
+      vertical-align:text-top;
+      }
+      .item input:hover, .item select:hover, .item textarea:hover {
+      border: 1px solid transparent;
+      box-shadow: 0 0 3px 0  #006622;
+      color: #006622;
+      }
+      .item {
+      position: relative;
+      margin: 10px 0;
+      }
+      .item span {
+      color: red;
+      }
+      .week {
+      display:flex;
+      justfiy-content:space-between;
+      }
+      .colums {
+      display:flex;
+      justify-content:space-between;
+      flex-direction:row;
+      flex-wrap:wrap;
+      }
+      .colums div {
+      width:48%;
+      }
+      input[type=radio], input[type=checkbox]  {
+      display: none;
+      }
+      label.radio {
+      position: relative;
+      display: inline-block;
+      margin: 5px 20px 15px 0;
+      cursor: pointer;
+      }
+      .question span {
+      margin-left: 30px;
+      }
+      .question-answer label {
+      display: block;
+      }
+      label.radio:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      }
+      input[type=radio]:checked + label:before, label.radio:hover:before {
+      border: 2px solid  #006622;
+      }
+      label.radio:after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 5px;
+      width: 8px;
+      height: 4px;
+      border: 3px solid  #006622;
+      border-top: none;
+      border-right: none;
+      transform: rotate(-45deg);
+      opacity: 0;
+      }
+      input[type=radio]:checked + label:after {
+      opacity: 1;
+      }
+      .flax {
+      display:flex;
+      justify-content:space-around;
+      }
+      .btn-block {
+      margin-top: 10px;
+      text-align: center;
+      }
+      button {
+      width: 150px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px; 
+      background:  #1c87c9;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+      }
+      button:hover {
+      background:  #0692e8;
+      }
+      @media (min-width: 568px) {
+      .name-item, .city-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      }
+      .name-item input, .name-item div {
+      width: calc(50% - 20px);
+      }
+      .name-item div input {
+      width:97%;}
+      .name-item div label {
+      display:block;
+      padding-bottom:5px;
+      }
+      }
+    </style>
+{%endblock%}
+{%block title%} Heart failure risk {%endblock%}
+
+
+
+{%block content%}
+    <div class="testbox">
+    <form action = "{{url_for('predictheart')}}" method="post">
+      <div class="banner">
+        <h1>Heart failure prediction : Random forest </h1>
+        <h2 style = "color:white;font-style:italic"> {{predict_heart}} </h2>
+      </div>
+      <br/>
+      <fieldset>
+        <legend style = "text-align:center">Are you at risk of heart failure ? </legend>
+        <div class="colums">
+          <div class="item">
+            <label for="age">Age<span>*</span></label>
+            <input id="age" type="number" name="age" value = "30"/>
+          </div>
+          <div class="item">
+            <label for="anemia">Anémie<span>*</span></label>
+            <input id="anemia" type="number" name="ly" value = "0"/>
+          </div>
+          <div class="item">
+            <label for="cpk">CPK<span>*</span></label>
+            <input id="cpk" type="number"   name="cpk" value = "57" />
+          </div>
+          <div class="item">
+            <label for="diabete">Diabete<span>*</span></label>
+            <input id="diabete" type="number"   name="diabete" value = "0"/>
+          </div>
+          <div class="item">
+            <label for="ejs">Ejection systolique<span>*</span></label>
+            <input id="ejs" type="number"   name="ejs" value = "50" />
+          </div>
+          <div class="item">
+            <label for="hta">Hypertension arterielle<span>*</span></label>
+            <input id="hta" type="number"   name="hta" value = "0"/>
+          </div>
+          <div class="item">
+            <label for="plqq">Plaquettes<span>*</span></label>
+            <input id="plsqq" type="number"   name="plsqq" value = "250000"/>
+          </div>
+          <div class="item">
+            <label for="crea">Créatinine<span>*</span></label>
+            <input id="crea" type="number"   name="crea" value = "7.5"/>
+          </div>
+          <div class="item">
+            <label for="sodium">Natrémie<span>*</span></label>
+            <input id="sodium" type="number"   name="sodium" value = "40.99"/>
+          </div>
+          <div class="item">
+            <label for="sexe">Sexe<span>*</span></label>
+            <input id="sexe" type="number"   name="sexe" value = "1"/>
+          </div>
+           <div class="item">
+            <label for="tabac">Fumeur<span>*</span></label>
+            <input id="tabac" type="number"   name="tabac" value = "0"/>
+          </div>
+          
+    
+         
+      </fieldset>
+     
+      <div class="btn-block">
+      <button type="order" type = "submit" style = "background-color: #097969">Predict</button>
+      </div>
+    </form>
+    </div>
+{%endblock%}
